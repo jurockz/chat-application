@@ -3,18 +3,20 @@ import { over } from "stompjs";
 
 export var stompClient = null;
 
-export const registerSender = (
+export const registerSender = async (
   isReceiver,
   handleAddToConversation,
   isSender
 ) => {
-  let Sock = new SockJS("http://localhost:8080/ws");
-  stompClient = over(Sock);
-  stompClient.connect(
-    {},
-    () => onConnected(isReceiver, handleAddToConversation, isSender),
-    onError
-  );
+  if (!stompClient) {
+    let Sock = new SockJS("http://localhost:8080/ws");
+    stompClient = over(Sock);
+    await stompClient.connect(
+      {},
+      () => onConnected(isReceiver, handleAddToConversation, isSender),
+      onError
+    );
+  }
 };
 
 const onConnected = (isReceiver, handleAddToConversation, isSender) => {
