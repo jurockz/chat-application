@@ -13,6 +13,12 @@ function LoginForm({ handleSenderName }) {
     setInput(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleConnect();
+    }
+  };
+
   const handleConnect = () => {
     if (isInput !== "") handleSenderName(isInput);
   };
@@ -26,6 +32,7 @@ function LoginForm({ handleSenderName }) {
           value={isInput}
           onChange={handleInput}
           spellCheck={false}
+          onKeyDown={handleKeyDown}
         ></LoginFormInput>
         <LoginFormButton type="button" onClick={handleConnect}>
           Anmelden

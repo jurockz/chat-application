@@ -6,6 +6,22 @@ import { WriteWrapper, WriteInput } from "./StyledComponentsCC";
 function InputField({ handleAddToConversation, isSender, isReceiver }) {
   const [isMessage, setMessage] = useState("");
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
+  const handleSendMessage = () => {
+    sendMessage(
+      handleAddToConversation,
+      setMessage,
+      isSender,
+      isReceiver,
+      isMessage
+    );
+  };
+
   const handleOnChangeEvent = (event) => {
     setMessage(event.target.value);
   };
@@ -17,19 +33,9 @@ function InputField({ handleAddToConversation, isSender, isReceiver }) {
         onChange={handleOnChangeEvent}
         value={isMessage}
         spellCheck={false}
+        onKeyDown={handleKeyDown}
       />
-      <SendButton
-        sendFunction={() =>
-          sendMessage(
-            handleAddToConversation,
-            setMessage,
-            isSender,
-            isReceiver,
-            isMessage
-          )
-        }
-        active={isMessage !== ""}
-      />
+      <SendButton sendFunction={handleSendMessage} active={isMessage !== ""} />
     </WriteWrapper>
   );
 }
