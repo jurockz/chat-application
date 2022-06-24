@@ -1,6 +1,5 @@
 package com.jurek.chatappapi.service;
 
-import com.jurek.chatappapi.model.*;
 import com.jurek.chatappapi.model.Chat;
 import com.jurek.chatappapi.model.Message;
 import com.jurek.chatappapi.repository.MessageRepository;
@@ -17,7 +16,7 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    private final Comparator<Message> messageLatesToBottom = (m1, m2) -> (int) (m1.getCreated_at() - m2.getCreated_at());
+    private final Comparator<Message> messageLatestToBottom = (m1, m2) -> (int) (m1.getCreated_at() - m2.getCreated_at());
 
     private final Comparator<Chat> chatLatestToTop = (c1, c2) -> (int) (c2.getCreated_at() - c1.getCreated_at());
 
@@ -29,7 +28,7 @@ public class MessageService {
         return Stream.concat(
                 messageRepository.findMessageBySenderAndReceiver(sender, receiver).stream(),
                 messageRepository.findMessageBySenderAndReceiver(receiver, sender).stream())
-                .sorted(messageLatesToBottom)
+                .sorted(messageLatestToBottom)
                 .collect(Collectors.toList());
     }
 
